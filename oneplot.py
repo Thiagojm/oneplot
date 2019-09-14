@@ -3,9 +3,7 @@
 
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-import time
-import sys
-import os
+import matplotlib.dates as mdates
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 
@@ -27,6 +25,7 @@ def animate(i):
             yar.append(float(y))
     ax1.clear()
     ax1.plot(xar,yar)
+    ax1.tick_params(axis ='x', rotation = 45) 
 ani = animation.FuncAnimation(fig, animate, interval=1000)
 plt.gcf().autofmt_xdate()
 plt.show()
