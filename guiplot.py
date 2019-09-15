@@ -3,6 +3,7 @@
 
 import tkinter
 from tkinter.filedialog import askopenfilename
+import tkinter.messagebox
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 import os
@@ -93,5 +94,13 @@ lbl3.grid(column=0, row=3)  # posição do label
 btn3 = tkinter.Button(window, text="Reiniciar", bg="white", fg="blue",
                       command=restart_program)  # criar botão/ command=função do botão
 btn3.grid(column=1, row=3)  # posição do botão
+
+
+def confirmExit():
+    if tkinter.messagebox.askokcancel('Quit', 'Are you sure you want to exit?'):
+        window.destroy()
+
+
+window.protocol('WM_DELETE_WINDOW', confirmExit)
 
 window.mainloop()  # need loop to maintain it open
