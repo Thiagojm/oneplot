@@ -26,6 +26,6 @@ def animate(i):
     ax1.plot(xar,yar)
     ax1.tick_params(axis ='x', rotation = 45) 
     ax1.set_title(data_file)
-    ax1.set_xticks(ax1.get_xticks()[::2])
+    ax1.set_xticks(ax1.get_xticks()[::60])
 ani = animation.FuncAnimation(fig, animate, interval=1000)
 plt.show()
