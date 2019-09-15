@@ -7,7 +7,8 @@ import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 import os
 import sys
-
+import psutil
+import logging
 
 script_path = os.path.abspath(os.path.dirname(sys.argv[0]))  # define o local da onde o script esta sendo rodado
 
@@ -26,7 +27,8 @@ lbl.grid(column=0, row=0)  # posição do label
 def clicked():  # criar função para quando o botão for clicado
     tkinter.Tk().withdraw()
     global data_file  # criar variavel global, pode ser usada fora da função
-    data_file = askopenfilename(initialdir=script_path, title="Select file", filetypes=(("Text Files", '*.txt'), ("all files", "*.*")))
+    data_file = askopenfilename(initialdir=script_path, title="Select file",
+                                filetypes=(("Text Files", '*.txt'), ("all files", "*.*")))
 
 
 btn = tkinter.Button(window, text="Abrir arquivo", bg="white", fg="blue",
@@ -66,8 +68,30 @@ def plot():
     plt.show()
 
 
-btn2 = tkinter.Button(window, text="Plotar", bg="white", fg="blue", command=plot)  # criar botão/ command=função do botão
+btn2 = tkinter.Button(window, text="Plotar", bg="white", fg="blue",
+                      command=plot)  # criar botão/ command=função do botão
 
 btn2.grid(column=1, row=2)  # posição do botão
+
+
+def restart_program():  # reinicia o programa
+    try:
+        p = psutil.Process(os.getpid())
+        for handler in p.get_open_files() + p.connections():
+            os.close(handler.fd)
+    except Exception as e:
+        logging.error(e)
+
+    python = sys.executable
+    os.execl(python, python, *sys.argv)
+
+
+lbl3 = tkinter.Label(window, text="Clique para reiniciar e plotar novo gráfico",
+                     font=("Arial Bold", 11))  # Text inside window
+lbl3.grid(column=0, row=3)  # posição do label
+
+btn3 = tkinter.Button(window, text="Reiniciar", bg="white", fg="blue",
+                      command=restart_program)  # criar botão/ command=função do botão
+btn3.grid(column=1, row=3)  # posição do botão
 
 window.mainloop()  # need loop to maintain it open
