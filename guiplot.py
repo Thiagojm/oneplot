@@ -4,12 +4,9 @@
 import tkinter
 from tkinter.filedialog import askopenfilename
 import tkinter.messagebox
-import matplotlib.animation as animation
 import matplotlib.pyplot as plt
 import os
 import sys
-import psutil
-import logging
 
 script_path = os.path.abspath(os.path.dirname(sys.argv[0]))  # define o local da onde o script esta sendo rodado
 
@@ -42,7 +39,7 @@ fig = plt.figure()
 ax1 = fig.add_subplot(1, 1, 1)
 
 
-def animate(i):
+def animate():
     pullData = open(data_file, "r").read()
     dataArray = pullData.split('\n')
     xar = []
@@ -63,9 +60,8 @@ lbl2 = tkinter.Label(window, text="Clique para plotar o gráfico", font=("Arial 
 
 lbl2.grid(column=0, row=2)  # posição do label
 
-
 def plot():
-    ani = animation.FuncAnimation(fig, animate, interval=1000)
+    animate()
     plt.show()
 
 
@@ -76,13 +72,6 @@ btn2.grid(column=1, row=2)  # posição do botão
 
 
 def restart_program():  # reinicia o programa
-    try:
-        p = psutil.Process(os.getpid())
-        for handler in p.get_open_files() + p.connections():
-            os.close(handler.fd)
-    except Exception as e:
-        logging.error(e)
-
     python = sys.executable
     os.execl(python, python, *sys.argv)
 
